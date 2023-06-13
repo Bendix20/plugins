@@ -6,7 +6,7 @@ part of google_maps_flutter_web;
 
 /// Type used when passing an override to the _createMap function.
 @visibleForTesting
-typedef DebugCreateMapFunction = gmaps.GMap Function(HtmlElement div, gmaps.MapOptions options);
+typedef DebugCreateMapFunction = gmaps.GMap Function(HtmlElement? div, gmaps.MapOptions options);
 
 /// Encapsulates a [gmaps.GMap], its events, and where in the DOM it's rendered.
 class GoogleMapController {
@@ -23,8 +23,8 @@ class GoogleMapController {
   String _getViewType(int mapId) => 'plugins.flutter.io/google_maps_$mapId';
 
   // The Flutter widget that contains the rendered Map.
-  late HtmlElementView _widget;
-  late HtmlElement _div;
+  HtmlElementView? _widget;
+  HtmlElement? _div;
 
   /// The Flutter widget that will contain the rendered Map. Used for caching.
   HtmlElementView get widget {
@@ -33,7 +33,7 @@ class GoogleMapController {
         viewType: _getViewType(_mapId),
       );
     }
-    return _widget;
+    return _widget!;
   }
 
   // The currently-enabled traffic layer.
@@ -83,7 +83,7 @@ class GoogleMapController {
 
     ui.platformViewRegistry.registerViewFactory(
       _getViewType(mapId),
-      (int viewId) => _div,
+      (int viewId) => _div!,
     );
   }
 
@@ -105,7 +105,7 @@ class GoogleMapController {
 
   DebugCreateMapFunction? _overrideCreateMap;
 
-  gmaps.GMap _createMap(HtmlElement div, gmaps.MapOptions options) {
+  gmaps.GMap _createMap(HtmlElement? div, gmaps.MapOptions options) {
     if (_overrideCreateMap != null) {
       return _overrideCreateMap!(div, options);
     }
