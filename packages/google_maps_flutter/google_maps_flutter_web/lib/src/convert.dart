@@ -261,8 +261,8 @@ Set<Marker> _rawOptionsToInitialMarkers(Map<String, dynamic> rawOptions) {
       position = LatLng.fromJson(rawMarker['position']);
     }
     if (rawMarker['infoWindow'] != null) {
-      final String title = rawMarker['infoWindow']['title'];
-      final String snippet = rawMarker['infoWindow']['snippet'];
+      final String? title = rawMarker['infoWindow']['title'];
+      final String? snippet = rawMarker['infoWindow']['snippet'];
       if (title != null || snippet != null) {
         infoWindow = InfoWindow(
           title: title,
