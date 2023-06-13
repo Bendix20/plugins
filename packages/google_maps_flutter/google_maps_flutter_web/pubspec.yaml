@@ -21,7 +21,7 @@ dependencies:
       url: https://github.com/strigePC/plugins.git
       path: packages/google_maps_flutter/google_maps_flutter_platform_interface/
       ref: maps-ground-overlays
-  google_maps: ^3.4.5
+  google_maps: ^6.3.0
   stream_transform: ^2.0.0
   sanitize_html: ^2.0.0
 
@@ -33,5 +33,5 @@ dev_dependencies:
   pedantic: ^1.8.0
 
 environment:
-  sdk: '>=2.12.0-259.9.beta <3.0.0'
+  sdk: ">=2.18.0 <4.0.0"
   flutter: ">=1.22.0"

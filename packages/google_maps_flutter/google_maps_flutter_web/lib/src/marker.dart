@@ -32,7 +32,7 @@ class MarkerController {
     if (onDragEnd != null) {
       _marker?.onDragend.listen((event) {
         _marker?.position = event.latLng;
-        onDragEnd.call(event.latLng);
+        if (event.latLng != null) onDragEnd.call(event.latLng!);
       });
     }
   }

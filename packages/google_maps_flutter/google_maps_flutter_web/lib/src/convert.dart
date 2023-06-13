@@ -122,70 +122,70 @@ bool _isTrafficLayerEnabled(Map<String, dynamic> rawOptions) {
   return rawOptions['options']['trafficEnabled'] ?? false;
 }
 
-// Coverts the incoming JSON object into a List of MapTypeStyler objects.
-List<gmaps.MapTypeStyler>? _parseStylers(List stylerJsons) {
-  return stylerJsons.map((styler) {
-    return gmaps.MapTypeStyler()
-      ..color = styler['color']
-      ..gamma = styler['gamma']
-      ..hue = styler['hue']
-      ..invertLightness = styler['invertLightness']
-      ..lightness = styler['lightness']
-      ..saturation = styler['saturation']
-      ..visibility = styler['visibility']
-      ..weight = styler['weight'];
-  }).toList();
-}
+// // Coverts the incoming JSON object into a List of MapTypeStyler objects.
+// List<gmaps.MapTypeStyler>? _parseStylers(List stylerJsons) {
+//   return stylerJsons.map((styler) {
+//     return gmaps.MapTypeStyler()
+//       ..color = styler['color']
+//       ..gamma = styler['gamma']
+//       ..hue = styler['hue']
+//       ..invertLightness = styler['invertLightness']
+//       ..lightness = styler['lightness']
+//       ..saturation = styler['saturation']
+//       ..visibility = styler['visibility']
+//       ..weight = styler['weight'];
+//   }).toList();
+// }
 
-// Converts a String to its corresponding MapTypeStyleElementType enum value.
-final _elementTypeToEnum = <String, gmaps.MapTypeStyleElementType>{
-  'all': gmaps.MapTypeStyleElementType.ALL,
-  'geometry': gmaps.MapTypeStyleElementType.GEOMETRY,
-  'geometry.fill': gmaps.MapTypeStyleElementType.GEOMETRY_FILL,
-  'geometry.stroke': gmaps.MapTypeStyleElementType.GEOMETRY_STROKE,
-  'labels': gmaps.MapTypeStyleElementType.LABELS,
-  'labels.icon': gmaps.MapTypeStyleElementType.LABELS_ICON,
-  'labels.text': gmaps.MapTypeStyleElementType.LABELS_TEXT,
-  'labels.text.fill': gmaps.MapTypeStyleElementType.LABELS_TEXT_FILL,
-  'labels.text.stroke': gmaps.MapTypeStyleElementType.LABELS_TEXT_STROKE,
-};
+// // Converts a String to its corresponding MapTypeStyleElementType enum value.
+// final _elementTypeToEnum = <String, gmaps.MapTypeStyleElementType>{
+//   'all': gmaps.MapTypeStyleElementType.ALL,
+//   'geometry': gmaps.MapTypeStyleElementType.GEOMETRY,
+//   'geometry.fill': gmaps.MapTypeStyleElementType.GEOMETRY_FILL,
+//   'geometry.stroke': gmaps.MapTypeStyleElementType.GEOMETRY_STROKE,
+//   'labels': gmaps.MapTypeStyleElementType.LABELS,
+//   'labels.icon': gmaps.MapTypeStyleElementType.LABELS_ICON,
+//   'labels.text': gmaps.MapTypeStyleElementType.LABELS_TEXT,
+//   'labels.text.fill': gmaps.MapTypeStyleElementType.LABELS_TEXT_FILL,
+//   'labels.text.stroke': gmaps.MapTypeStyleElementType.LABELS_TEXT_STROKE,
+// };
 
-// Converts a String to its corresponding MapTypeStyleFeatureType enum value.
-final _featureTypeToEnum = <String, gmaps.MapTypeStyleFeatureType>{
-  'administrative': gmaps.MapTypeStyleFeatureType.ADMINISTRATIVE,
-  'administrative.country': gmaps.MapTypeStyleFeatureType.ADMINISTRATIVE_COUNTRY,
-  'administrative.land_parcel': gmaps.MapTypeStyleFeatureType.ADMINISTRATIVE_LAND_PARCEL,
-  'administrative.locality': gmaps.MapTypeStyleFeatureType.ADMINISTRATIVE_LOCALITY,
-  'administrative.neighborhood': gmaps.MapTypeStyleFeatureType.ADMINISTRATIVE_NEIGHBORHOOD,
-  'administrative.province': gmaps.MapTypeStyleFeatureType.ADMINISTRATIVE_PROVINCE,
-  'all': gmaps.MapTypeStyleFeatureType.ALL,
-  'landscape': gmaps.MapTypeStyleFeatureType.LANDSCAPE,
-  'landscape.man_made': gmaps.MapTypeStyleFeatureType.LANDSCAPE_MAN_MADE,
-  'landscape.natural': gmaps.MapTypeStyleFeatureType.LANDSCAPE_NATURAL,
-  'landscape.natural.landcover': gmaps.MapTypeStyleFeatureType.LANDSCAPE_NATURAL_LANDCOVER,
-  'landscape.natural.terrain': gmaps.MapTypeStyleFeatureType.LANDSCAPE_NATURAL_TERRAIN,
-  'poi': gmaps.MapTypeStyleFeatureType.POI,
-  'poi.attraction': gmaps.MapTypeStyleFeatureType.POI_ATTRACTION,
-  'poi.business': gmaps.MapTypeStyleFeatureType.POI_BUSINESS,
-  'poi.government': gmaps.MapTypeStyleFeatureType.POI_GOVERNMENT,
-  'poi.medical': gmaps.MapTypeStyleFeatureType.POI_MEDICAL,
-  'poi.park': gmaps.MapTypeStyleFeatureType.POI_PARK,
-  'poi.place_of_worship': gmaps.MapTypeStyleFeatureType.POI_PLACE_OF_WORSHIP,
-  'poi.school': gmaps.MapTypeStyleFeatureType.POI_SCHOOL,
-  'poi.sports_complex': gmaps.MapTypeStyleFeatureType.POI_SPORTS_COMPLEX,
-  'road': gmaps.MapTypeStyleFeatureType.ROAD,
-  'road.arterial': gmaps.MapTypeStyleFeatureType.ROAD_ARTERIAL,
-  'road.highway': gmaps.MapTypeStyleFeatureType.ROAD_HIGHWAY,
-  'road.highway.controlled_access': gmaps.MapTypeStyleFeatureType.ROAD_HIGHWAY_CONTROLLED_ACCESS,
-  'road.local': gmaps.MapTypeStyleFeatureType.ROAD_LOCAL,
-  'transit': gmaps.MapTypeStyleFeatureType.TRANSIT,
-  'transit.line': gmaps.MapTypeStyleFeatureType.TRANSIT_LINE,
-  'transit.station': gmaps.MapTypeStyleFeatureType.TRANSIT_STATION,
-  'transit.station.airport': gmaps.MapTypeStyleFeatureType.TRANSIT_STATION_AIRPORT,
-  'transit.station.bus': gmaps.MapTypeStyleFeatureType.TRANSIT_STATION_BUS,
-  'transit.station.rail': gmaps.MapTypeStyleFeatureType.TRANSIT_STATION_RAIL,
-  'water': gmaps.MapTypeStyleFeatureType.WATER,
-};
+// // Converts a String to its corresponding MapTypeStyleFeatureType enum value.
+// final _featureTypeToEnum = <String, gmaps.MapTypeStyleFeatureType>{
+//   'administrative': gmaps.MapTypeStyleFeatureType.ADMINISTRATIVE,
+//   'administrative.country': gmaps.MapTypeStyleFeatureType.ADMINISTRATIVE_COUNTRY,
+//   'administrative.land_parcel': gmaps.MapTypeStyleFeatureType.ADMINISTRATIVE_LAND_PARCEL,
+//   'administrative.locality': gmaps.MapTypeStyleFeatureType.ADMINISTRATIVE_LOCALITY,
+//   'administrative.neighborhood': gmaps.MapTypeStyleFeatureType.ADMINISTRATIVE_NEIGHBORHOOD,
+//   'administrative.province': gmaps.MapTypeStyleFeatureType.ADMINISTRATIVE_PROVINCE,
+//   'all': gmaps.MapTypeStyleFeatureType.ALL,
+//   'landscape': gmaps.MapTypeStyleFeatureType.LANDSCAPE,
+//   'landscape.man_made': gmaps.MapTypeStyleFeatureType.LANDSCAPE_MAN_MADE,
+//   'landscape.natural': gmaps.MapTypeStyleFeatureType.LANDSCAPE_NATURAL,
+//   'landscape.natural.landcover': gmaps.MapTypeStyleFeatureType.LANDSCAPE_NATURAL_LANDCOVER,
+//   'landscape.natural.terrain': gmaps.MapTypeStyleFeatureType.LANDSCAPE_NATURAL_TERRAIN,
+//   'poi': gmaps.MapTypeStyleFeatureType.POI,
+//   'poi.attraction': gmaps.MapTypeStyleFeatureType.POI_ATTRACTION,
+//   'poi.business': gmaps.MapTypeStyleFeatureType.POI_BUSINESS,
+//   'poi.government': gmaps.MapTypeStyleFeatureType.POI_GOVERNMENT,
+//   'poi.medical': gmaps.MapTypeStyleFeatureType.POI_MEDICAL,
+//   'poi.park': gmaps.MapTypeStyleFeatureType.POI_PARK,
+//   'poi.place_of_worship': gmaps.MapTypeStyleFeatureType.POI_PLACE_OF_WORSHIP,
+//   'poi.school': gmaps.MapTypeStyleFeatureType.POI_SCHOOL,
+//   'poi.sports_complex': gmaps.MapTypeStyleFeatureType.POI_SPORTS_COMPLEX,
+//   'road': gmaps.MapTypeStyleFeatureType.ROAD,
+//   'road.arterial': gmaps.MapTypeStyleFeatureType.ROAD_ARTERIAL,
+//   'road.highway': gmaps.MapTypeStyleFeatureType.ROAD_HIGHWAY,
+//   'road.highway.controlled_access': gmaps.MapTypeStyleFeatureType.ROAD_HIGHWAY_CONTROLLED_ACCESS,
+//   'road.local': gmaps.MapTypeStyleFeatureType.ROAD_LOCAL,
+//   'transit': gmaps.MapTypeStyleFeatureType.TRANSIT,
+//   'transit.line': gmaps.MapTypeStyleFeatureType.TRANSIT_LINE,
+//   'transit.station': gmaps.MapTypeStyleFeatureType.TRANSIT_STATION,
+//   'transit.station.airport': gmaps.MapTypeStyleFeatureType.TRANSIT_STATION_AIRPORT,
+//   'transit.station.bus': gmaps.MapTypeStyleFeatureType.TRANSIT_STATION_BUS,
+//   'transit.station.rail': gmaps.MapTypeStyleFeatureType.TRANSIT_STATION_RAIL,
+//   'water': gmaps.MapTypeStyleFeatureType.WATER,
+// };
 
 // The keys we'd expect to see in a serialized MapTypeStyle JSON object.
 final _mapStyleKeys = {
@@ -195,33 +195,32 @@ final _mapStyleKeys = {
 };
 
 // Checks if the passed in Map contains some of the _mapStyleKeys.
-bool _isJsonMapStyle(Map value) {
-  return _mapStyleKeys.intersection(value.keys.toSet()).isNotEmpty;
-}
+// bool _isJsonMapStyle(Map value) {
+//   return _mapStyleKeys.intersection(value.keys.toSet()).isNotEmpty;
+// }
 
 // Converts an incoming JSON-encoded Style info, into the correct gmaps array.
-List<gmaps.MapTypeStyle> _mapStyles(String? mapStyleJson) {
-  List<gmaps.MapTypeStyle> styles = [];
-  if (mapStyleJson != null) {
-    styles = json.decode(mapStyleJson, reviver: (key, value) {
-      if (value is Map && _isJsonMapStyle(value)) {
-        return gmaps.MapTypeStyle()
-          ..elementType = _elementTypeToEnum[value['elementType']]
-          ..featureType = _featureTypeToEnum[value['featureType']]
-          ..stylers = _parseStylers(value['stylers']);
-      }
-      return value;
-    }).cast<gmaps.MapTypeStyle>();
-  }
-  return styles;
-}
+// List<gmaps.MapTypeStyle> _mapStyles(String? mapStyleJson) {
+//   List<gmaps.MapTypeStyle> styles = [];
+//   if (mapStyleJson != null) {
+//     styles = json.decode(mapStyleJson, reviver: (key, value) {
+//       if (value is Map && _isJsonMapStyle(value)) {
+//         return gmaps.MapTypeStyle()
+//           ..elementType = _elementTypeToEnum[value['elementType']]
+//           ..featureType = _featureTypeToEnum[value['featureType']]
+//           ..stylers = _parseStylers(value['stylers']);
+//       }
+//       return value;
+//     }).cast<gmaps.MapTypeStyle>();
+//   }
+//   return styles;
+// }
 
-gmaps.LatLng? _latLngToGmLatLng(LatLng latLng) {
-  if (latLng == null) return null;
+gmaps.LatLng _latLngToGmLatLng(LatLng latLng) {
   return gmaps.LatLng(latLng.latitude, latLng.longitude);
 }
 
-LatLng _gmLatLngToLatLng(gmaps.LatLng latLng) {
+LatLng _gmLatLngToLatLng(gmaps.LatLng? latLng) {
   if (latLng == null) return _nullLatLng;
   return LatLng(latLng.lat.toDouble(), latLng.lng.toDouble());
 }
@@ -240,8 +239,8 @@ LatLngBounds _gmLatLngBoundsTolatLngBounds(gmaps.LatLngBounds latLngBounds) {
 CameraPosition _gmViewportToCameraPosition(gmaps.GMap map) {
   return CameraPosition(
     target: _gmLatLngToLatLng(map.center),
-    bearing: map.heading.toDouble(),
-    tilt: map.tilt.toDouble(),
+    bearing: map.heading!.toDouble(),
+    tilt: map.tilt!.toDouble(),
     zoom: map.zoom?.toDouble() ?? 10,
   );
 }
@@ -456,7 +455,7 @@ gmaps.PolygonOptions _polygonOptionsFromPolygon(gmaps.GMap googleMap, Polygon po
   List<gmaps.LatLng> path = [];
   polygon.points.forEach((point) {
     if (_latLngToGmLatLng(point) != null) {
-      path.add(_latLngToGmLatLng(point)!);
+      path.add(_latLngToGmLatLng(point));
     }
   });
   final polygonDirection = _isPolygonClockwise(path);
@@ -504,7 +503,7 @@ bool _isPolygonClockwise(List<gmaps.LatLng> path) {
 gmaps.PolylineOptions _polylineOptionsFromPolyline(gmaps.GMap googleMap, Polyline polyline) {
   List<gmaps.LatLng> paths = [];
   polyline.points.forEach((point) {
-    if (_latLngToGmLatLng(point) != null) paths.add(_latLngToGmLatLng(point)!);
+    if (_latLngToGmLatLng(point) != null) paths.add(_latLngToGmLatLng(point));
   });
 
   return gmaps.PolylineOptions()
@@ -562,16 +561,16 @@ void _applyCameraUpdate(gmaps.GMap map, CameraUpdate update) {
           // print('Error computing new focus LatLng. JS Error: ' + e.toString());
         }
       }
-      map.zoom = map.zoom + newZoomDelta;
+      map.zoom = (map.zoom ?? 0) + newZoomDelta;
       if (focusLatLng != null) {
         map.panTo(focusLatLng);
       }
       break;
     case 'zoomIn':
-      map.zoom++;
+      map.zoom = map.zoom! + 1;
       break;
     case 'zoomOut':
-      map.zoom--;
+      map.zoom = map.zoom! - 1;
       break;
     case 'zoomTo':
       map.zoom = json[1];
@@ -583,16 +582,16 @@ void _applyCameraUpdate(gmaps.GMap map, CameraUpdate update) {
 
 // original JS by: Byron Singh (https://stackoverflow.com/a/30541162)
 gmaps.LatLng _pixelToLatLng(gmaps.GMap map, int x, int y) {
-  final ne = map.bounds.northEast;
-  final sw = map.bounds.southWest;
+  final ne = map.bounds?.northEast;
+  final sw = map.bounds?.southWest;
   final projection = map.projection;
 
-  final topRight = projection.fromLatLngToPoint(ne);
-  final bottomLeft = projection.fromLatLngToPoint(sw);
+  final topRight =  projection!.fromLatLngToPoint!(ne)!;
+  final bottomLeft = projection.fromLatLngToPoint!(sw)!;
 
-  final scale = 1 << map.zoom; // 2 ^ zoom
+  final scale = 1 << map.zoom!.toInt(); // 2 ^ zoom
 
-  final point = gmaps.Point((x / scale) + bottomLeft.x, (y / scale) + topRight.y);
+  final point = gmaps.Point((x / scale) + bottomLeft.x!, (y / scale) + topRight.y!);
 
-  return projection.fromPointToLatLng(point);
+  return projection.fromPointToLatLng!(point)!;
 }

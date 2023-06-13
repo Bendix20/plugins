@@ -6,8 +6,7 @@ part of google_maps_flutter_web;
 
 /// Type used when passing an override to the _createMap function.
 @visibleForTesting
-typedef DebugCreateMapFunction = gmaps.GMap Function(
-    HtmlElement div, gmaps.MapOptions options);
+typedef DebugCreateMapFunction = gmaps.GMap Function(HtmlElement div, gmaps.MapOptions options);
 
 /// Encapsulates a [gmaps.GMap], its events, and where in the DOM it's rendered.
 class GoogleMapController {
@@ -144,14 +143,18 @@ class GoogleMapController {
   // Funnels map gmap events into the plugin's stream controller.
   void _attachMapEvents(gmaps.GMap map) {
     map.onClick.listen((event) {
-      _streamController.add(
-        MapTapEvent(_mapId, _gmLatLngToLatLng(event.latLng)),
-      );
+      if (event.latLng != null) {
+        _streamController.add(
+          MapTapEvent(_mapId, _gmLatLngToLatLng(event.latLng!)),
+        );
+      }
     });
     map.onRightclick.listen((event) {
-      _streamController.add(
-        MapLongPressEvent(_mapId, _gmLatLngToLatLng(event.latLng)),
-      );
+      if (event.latLng != null) {
+        _streamController.add(
+          MapLongPressEvent(_mapId, _gmLatLngToLatLng(event.latLng!)),
+        );
+      }
     });
     map.onBoundsChanged.listen((event) {
       if (!_mapIsMoving) {
@@ -244,20 +247,19 @@ class GoogleMapController {
 
   /// Returns the [LatLngBounds] of the current viewport.
   Future<LatLngBounds> getVisibleRegion() async {
-    return _gmLatLngBoundsTolatLngBounds(await _googleMap.bounds);
+    final bounds = await _googleMap.bounds;
+    return _gmLatLngBoundsTolatLngBounds(bounds!);
   }
 
   /// Returns the [ScreenCoordinate] for a given viewport [LatLng].
   Future<ScreenCoordinate> getScreenCoordinate(LatLng latLng) async {
-    final point =
-        _googleMap.projection.fromLatLngToPoint(_latLngToGmLatLng(latLng));
-    return ScreenCoordinate(x: point.x.toInt(), y: point.y.toInt());
+    final point = _googleMap.projection!.fromLatLngToPoint!.call(_latLngToGmLatLng(latLng));
+    return ScreenCoordinate(x: point!.x!.toInt(), y: point.y!.toInt());
   }
 
   /// Returns the [LatLng] for a `screenCoordinate` (in pixels) of the viewport.
   Future<LatLng> getLatLng(ScreenCoordinate screenCoordinate) async {
-    final gmaps.LatLng latLng =
-        _pixelToLatLng(_googleMap, screenCoordinate.x, screenCoordinate.y);
+    final gmaps.LatLng latLng = _pixelToLatLng(_googleMap, screenCoordinate.x, screenCoordinate.y);
     return _gmLatLngToLatLng(latLng);
   }
 
@@ -267,7 +269,7 @@ class GoogleMapController {
   }
 
   /// Returns the zoom level of the current viewport.
-  Future<double> getZoomLevel() async => _googleMap.zoom.toDouble();
+  Future<double> getZoomLevel() async => _googleMap.zoom!.toDouble();
 
   // Geometry manipulation
 
