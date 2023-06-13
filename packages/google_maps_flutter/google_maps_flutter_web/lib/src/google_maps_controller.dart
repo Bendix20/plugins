@@ -24,8 +24,8 @@ class GoogleMapController {
   String _getViewType(int mapId) => 'plugins.flutter.io/google_maps_$mapId';
 
   // The Flutter widget that contains the rendered Map.
-  HtmlElementView _widget;
-  HtmlElement _div;
+  late HtmlElementView _widget;
+  late HtmlElement _div;
 
   /// The Flutter widget that will contain the rendered Map. Used for caching.
   HtmlElementView get widget {
@@ -38,14 +38,14 @@ class GoogleMapController {
   }
 
   // The currently-enabled traffic layer.
-  gmaps.TrafficLayer _trafficLayer;
+  gmaps.TrafficLayer? _trafficLayer;
 
   /// A getter for the current traffic layer. Only for tests.
   @visibleForTesting
-  gmaps.TrafficLayer get trafficLayer => _trafficLayer;
+  gmaps.TrafficLayer? get trafficLayer => _trafficLayer;
 
   // The underlying GMap instance. This is the interface with the JS SDK.
-  gmaps.GMap _googleMap;
+  late gmaps.GMap _googleMap;
 
   // The StreamController used by this controller and the geometry ones.
   final StreamController<MapEvent> _streamController;
@@ -54,10 +54,10 @@ class GoogleMapController {
   Stream<MapEvent> get events => _streamController.stream;
 
   // Geometry controllers, for different features of the map.
-  CirclesController _circlesController;
-  PolygonsController _polygonsController;
-  PolylinesController _polylinesController;
-  MarkersController _markersController;
+  late CirclesController _circlesController;
+  late PolygonsController _polygonsController;
+  late PolylinesController _polylinesController;
+  late MarkersController _markersController;
   // Keeps track if _attachGeometryControllers has been called or not.
   bool _controllersBoundToMap = false;
 
@@ -66,9 +66,9 @@ class GoogleMapController {
 
   /// Initializes the GMap, and the sub-controllers related to it. Wires events.
   GoogleMapController({
-    @required int mapId,
-    @required StreamController<MapEvent> streamController,
-    @required Map<String, dynamic> rawOptions,
+    required int mapId,
+    required StreamController<MapEvent> streamController,
+    required Map<String, dynamic> rawOptions,
   })  : this._mapId = mapId,
         this._streamController = streamController,
         this._rawOptions = rawOptions {
@@ -91,11 +91,11 @@ class GoogleMapController {
   /// Overrides certain properties to install mocks defined during testing.
   @visibleForTesting
   void debugSetOverrides({
-    DebugCreateMapFunction createMap,
-    MarkersController markers,
-    CirclesController circles,
-    PolygonsController polygons,
-    PolylinesController polylines,
+    required DebugCreateMapFunction createMap, // TODO ???
+    MarkersController? markers,
+    CirclesController? circles,
+    PolygonsController? polygons,
+    PolylinesController? polylines,
   }) {
     _overrideCreateMap = createMap;
     _markersController = markers ?? _markersController;
@@ -104,7 +104,7 @@ class GoogleMapController {
     _polylinesController = polylines ?? _polylinesController;
   }
 
-  DebugCreateMapFunction _overrideCreateMap;
+  late DebugCreateMapFunction _overrideCreateMap;
 
   gmaps.GMap _createMap(HtmlElement div, gmaps.MapOptions options) {
     if (_overrideCreateMap != null) {
@@ -181,10 +181,10 @@ class GoogleMapController {
 
   // Renders the initial sets of geometry.
   void _renderInitialGeometry({
-    Set<Marker> markers,
-    Set<Circle> circles,
-    Set<Polygon> polygons,
-    Set<Polyline> polylines,
+    required Set<Marker> markers,
+    required Set<Circle> circles,
+    required Set<Polygon> polygons,
+    required Set<Polyline> polylines,
   }) {
     assert(
         _controllersBoundToMap,
@@ -224,17 +224,17 @@ class GoogleMapController {
 
   // Sets new [gmaps.MapOptions] on the wrapped map.
   void _setOptions(gmaps.MapOptions options) {
-    _googleMap?.options = options;
+    _googleMap.options = options;
   }
 
   // Attaches/detaches a Traffic Layer on the passed `map` if `attach` is true/false.
   void _setTrafficLayer(gmaps.GMap map, bool attach) {
     if (attach && _trafficLayer == null) {
       _trafficLayer = gmaps.TrafficLayer();
-      _trafficLayer.set('map', map);
+      _trafficLayer!.set('map', map);
     }
     if (!attach && _trafficLayer != null) {
-      _trafficLayer.set('map', null);
+      _trafficLayer!.set('map', null);
       _trafficLayer = null;
     }
   }
@@ -251,7 +251,7 @@ class GoogleMapController {
   Future<ScreenCoordinate> getScreenCoordinate(LatLng latLng) async {
     final point =
         _googleMap.projection.fromLatLngToPoint(_latLngToGmLatLng(latLng));
-    return ScreenCoordinate(x: point.x, y: point.y);
+    return ScreenCoordinate(x: point.x.toInt(), y: point.y.toInt());
   }
 
   /// Returns the [LatLng] for a `screenCoordinate` (in pixels) of the viewport.
@@ -273,57 +273,51 @@ class GoogleMapController {
 
   /// Applies [CircleUpdates] to the currently managed circles.
   void updateCircles(CircleUpdates updates) {
-    _circlesController?.addCircles(updates.circlesToAdd);
-    _circlesController?.changeCircles(updates.circlesToChange);
-    _circlesController?.removeCircles(updates.circleIdsToRemove);
+    _circlesController.addCircles(updates.circlesToAdd);
+    _circlesController.changeCircles(updates.circlesToChange);
+    _circlesController.removeCircles(updates.circleIdsToRemove);
   }
 
   /// Applies [PolygonUpdates] to the currently managed polygons.
   void updatePolygons(PolygonUpdates updates) {
-    _polygonsController?.addPolygons(updates.polygonsToAdd);
-    _polygonsController?.changePolygons(updates.polygonsToChange);
-    _polygonsController?.removePolygons(updates.polygonIdsToRemove);
+    _polygonsController.addPolygons(updates.polygonsToAdd);
+    _polygonsController.changePolygons(updates.polygonsToChange);
+    _polygonsController.removePolygons(updates.polygonIdsToRemove);
   }
 
   /// Applies [PolylineUpdates] to the currently managed lines.
   void updatePolylines(PolylineUpdates updates) {
-    _polylinesController?.addPolylines(updates.polylinesToAdd);
-    _polylinesController?.changePolylines(updates.polylinesToChange);
-    _polylinesController?.removePolylines(updates.polylineIdsToRemove);
+    _polylinesController.addPolylines(updates.polylinesToAdd);
+    _polylinesController.changePolylines(updates.polylinesToChange);
+    _polylinesController.removePolylines(updates.polylineIdsToRemove);
   }
 
   /// Applies [MarkerUpdates] to the currently managed markers.
   void updateMarkers(MarkerUpdates updates) {
-    _markersController?.addMarkers(updates.markersToAdd);
-    _markersController?.changeMarkers(updates.markersToChange);
-    _markersController?.removeMarkers(updates.markerIdsToRemove);
+    _markersController.addMarkers(updates.markersToAdd);
+    _markersController.changeMarkers(updates.markersToChange);
+    _markersController.removeMarkers(updates.markerIdsToRemove);
   }
 
   /// Shows the [InfoWindow] of the marker identified by its [MarkerId].
   void showInfoWindow(MarkerId markerId) {
-    _markersController?.showMarkerInfoWindow(markerId);
+    _markersController.showMarkerInfoWindow(markerId);
   }
 
   /// Hides the [InfoWindow] of the marker identified by its [MarkerId].
   void hideInfoWindow(MarkerId markerId) {
-    _markersController?.hideMarkerInfoWindow(markerId);
+    _markersController.hideMarkerInfoWindow(markerId);
   }
 
   /// Returns true if the [InfoWindow] of the marker identified by [MarkerId] is shown.
   bool isInfoWindowShown(MarkerId markerId) {
-    return _markersController?.isInfoWindowShown(markerId);
+    return _markersController.isInfoWindowShown(markerId);
   }
 
   // Cleanup
 
   /// Disposes of this controller and its resources.
   void dispose() {
-    _widget = null;
-    _googleMap = null;
-    _circlesController = null;
-    _polygonsController = null;
-    _polylinesController = null;
-    _markersController = null;
     _streamController.close();
   }
 }

@@ -86,8 +86,7 @@ gmaps.MapOptions _rawOptionsToGmapsOptions(Map<String, dynamic> rawOptions) {
     options.styles = optionsUpdate['styles'];
   }
 
-  if (optionsUpdate['scrollGesturesEnabled'] == false ||
-      optionsUpdate['zoomGesturesEnabled'] == false) {
+  if (optionsUpdate['scrollGesturesEnabled'] == false || optionsUpdate['zoomGesturesEnabled'] == false) {
     options.gestureHandling = 'none';
   } else {
     options.gestureHandling = 'auto';
@@ -109,9 +108,8 @@ gmaps.MapOptions _applyInitialPosition(
   Map<String, dynamic> initialPosition = rawOptions['initialCameraPosition'];
   if (initialPosition != null) {
     final position = CameraPosition.fromMap(initialPosition);
-    options.zoom = position.zoom;
-    options.center =
-        gmaps.LatLng(position.target.latitude, position.target.longitude);
+    options.zoom = position?.zoom;
+    options.center = gmaps.LatLng(position?.target.latitude, position?.target.longitude);
   }
   return options;
 }
@@ -125,8 +123,8 @@ bool _isTrafficLayerEnabled(Map<String, dynamic> rawOptions) {
 }
 
 // Coverts the incoming JSON object into a List of MapTypeStyler objects.
-List<gmaps.MapTypeStyler> _parseStylers(List stylerJsons) {
-  return stylerJsons?.map((styler) {
+List<gmaps.MapTypeStyler>? _parseStylers(List stylerJsons) {
+  return stylerJsons.map((styler) {
     return gmaps.MapTypeStyler()
       ..color = styler['color']
       ..gamma = styler['gamma']
@@ -136,7 +134,7 @@ List<gmaps.MapTypeStyler> _parseStylers(List stylerJsons) {
       ..saturation = styler['saturation']
       ..visibility = styler['visibility']
       ..weight = styler['weight'];
-  })?.toList();
+  }).toList();
 }
 
 // Converts a String to its corresponding MapTypeStyleElementType enum value.
@@ -155,24 +153,17 @@ final _elementTypeToEnum = <String, gmaps.MapTypeStyleElementType>{
 // Converts a String to its corresponding MapTypeStyleFeatureType enum value.
 final _featureTypeToEnum = <String, gmaps.MapTypeStyleFeatureType>{
   'administrative': gmaps.MapTypeStyleFeatureType.ADMINISTRATIVE,
-  'administrative.country':
-      gmaps.MapTypeStyleFeatureType.ADMINISTRATIVE_COUNTRY,
-  'administrative.land_parcel':
-      gmaps.MapTypeStyleFeatureType.ADMINISTRATIVE_LAND_PARCEL,
-  'administrative.locality':
-      gmaps.MapTypeStyleFeatureType.ADMINISTRATIVE_LOCALITY,
-  'administrative.neighborhood':
-      gmaps.MapTypeStyleFeatureType.ADMINISTRATIVE_NEIGHBORHOOD,
-  'administrative.province':
-      gmaps.MapTypeStyleFeatureType.ADMINISTRATIVE_PROVINCE,
+  'administrative.country': gmaps.MapTypeStyleFeatureType.ADMINISTRATIVE_COUNTRY,
+  'administrative.land_parcel': gmaps.MapTypeStyleFeatureType.ADMINISTRATIVE_LAND_PARCEL,
+  'administrative.locality': gmaps.MapTypeStyleFeatureType.ADMINISTRATIVE_LOCALITY,
+  'administrative.neighborhood': gmaps.MapTypeStyleFeatureType.ADMINISTRATIVE_NEIGHBORHOOD,
+  'administrative.province': gmaps.MapTypeStyleFeatureType.ADMINISTRATIVE_PROVINCE,
   'all': gmaps.MapTypeStyleFeatureType.ALL,
   'landscape': gmaps.MapTypeStyleFeatureType.LANDSCAPE,
   'landscape.man_made': gmaps.MapTypeStyleFeatureType.LANDSCAPE_MAN_MADE,
   'landscape.natural': gmaps.MapTypeStyleFeatureType.LANDSCAPE_NATURAL,
-  'landscape.natural.landcover':
-      gmaps.MapTypeStyleFeatureType.LANDSCAPE_NATURAL_LANDCOVER,
-  'landscape.natural.terrain':
-      gmaps.MapTypeStyleFeatureType.LANDSCAPE_NATURAL_TERRAIN,
+  'landscape.natural.landcover': gmaps.MapTypeStyleFeatureType.LANDSCAPE_NATURAL_LANDCOVER,
+  'landscape.natural.terrain': gmaps.MapTypeStyleFeatureType.LANDSCAPE_NATURAL_TERRAIN,
   'poi': gmaps.MapTypeStyleFeatureType.POI,
   'poi.attraction': gmaps.MapTypeStyleFeatureType.POI_ATTRACTION,
   'poi.business': gmaps.MapTypeStyleFeatureType.POI_BUSINESS,
@@ -185,14 +176,12 @@ final _featureTypeToEnum = <String, gmaps.MapTypeStyleFeatureType>{
   'road': gmaps.MapTypeStyleFeatureType.ROAD,
   'road.arterial': gmaps.MapTypeStyleFeatureType.ROAD_ARTERIAL,
   'road.highway': gmaps.MapTypeStyleFeatureType.ROAD_HIGHWAY,
-  'road.highway.controlled_access':
-      gmaps.MapTypeStyleFeatureType.ROAD_HIGHWAY_CONTROLLED_ACCESS,
+  'road.highway.controlled_access': gmaps.MapTypeStyleFeatureType.ROAD_HIGHWAY_CONTROLLED_ACCESS,
   'road.local': gmaps.MapTypeStyleFeatureType.ROAD_LOCAL,
   'transit': gmaps.MapTypeStyleFeatureType.TRANSIT,
   'transit.line': gmaps.MapTypeStyleFeatureType.TRANSIT_LINE,
   'transit.station': gmaps.MapTypeStyleFeatureType.TRANSIT_STATION,
-  'transit.station.airport':
-      gmaps.MapTypeStyleFeatureType.TRANSIT_STATION_AIRPORT,
+  'transit.station.airport': gmaps.MapTypeStyleFeatureType.TRANSIT_STATION_AIRPORT,
   'transit.station.bus': gmaps.MapTypeStyleFeatureType.TRANSIT_STATION_BUS,
   'transit.station.rail': gmaps.MapTypeStyleFeatureType.TRANSIT_STATION_RAIL,
   'water': gmaps.MapTypeStyleFeatureType.WATER,
@@ -211,7 +200,7 @@ bool _isJsonMapStyle(Map value) {
 }
 
 // Converts an incoming JSON-encoded Style info, into the correct gmaps array.
-List<gmaps.MapTypeStyle> _mapStyles(String mapStyleJson) {
+List<gmaps.MapTypeStyle> _mapStyles(String? mapStyleJson) {
   List<gmaps.MapTypeStyle> styles = [];
   if (mapStyleJson != null) {
     styles = json.decode(mapStyleJson, reviver: (key, value) {
@@ -227,14 +216,14 @@ List<gmaps.MapTypeStyle> _mapStyles(String mapStyleJson) {
   return styles;
 }
 
-gmaps.LatLng _latLngToGmLatLng(LatLng latLng) {
+gmaps.LatLng? _latLngToGmLatLng(LatLng latLng) {
   if (latLng == null) return null;
   return gmaps.LatLng(latLng.latitude, latLng.longitude);
 }
 
 LatLng _gmLatLngToLatLng(gmaps.LatLng latLng) {
   if (latLng == null) return _nullLatLng;
-  return LatLng(latLng.lat, latLng.lng);
+  return LatLng(latLng.lat.toDouble(), latLng.lng.toDouble());
 }
 
 LatLngBounds _gmLatLngBoundsTolatLngBounds(gmaps.LatLngBounds latLngBounds) {
@@ -251,8 +240,8 @@ LatLngBounds _gmLatLngBoundsTolatLngBounds(gmaps.LatLngBounds latLngBounds) {
 CameraPosition _gmViewportToCameraPosition(gmaps.GMap map) {
   return CameraPosition(
     target: _gmLatLngToLatLng(map.center),
-    bearing: map.heading ?? 0,
-    tilt: map.tilt ?? 0,
+    bearing: map.heading.toDouble(),
+    tilt: map.tilt.toDouble(),
     zoom: map.zoom?.toDouble() ?? 10,
   );
 }
@@ -260,70 +249,68 @@ CameraPosition _gmViewportToCameraPosition(gmaps.GMap map) {
 Set<Marker> _rawOptionsToInitialMarkers(Map<String, dynamic> rawOptions) {
   final List<Map<String, dynamic>> list = rawOptions['markersToAdd'];
   Set<Marker> markers = {};
-  markers.addAll(list?.map((rawMarker) {
-        Offset offset;
-        LatLng position;
-        InfoWindow infoWindow;
-        BitmapDescriptor icon;
-        if (rawMarker['anchor'] != null) {
-          offset = Offset((rawMarker['anchor'][0]), (rawMarker['anchor'][1]));
-        }
-        if (rawMarker['position'] != null) {
-          position = LatLng.fromJson(rawMarker['position']);
-        }
-        if (rawMarker['infoWindow'] != null) {
-          final String title = rawMarker['infoWindow']['title'];
-          final String snippet = rawMarker['infoWindow']['snippet'];
-          if (title != null || snippet != null) {
-            infoWindow = InfoWindow(
-              title: title ?? '',
-              snippet: snippet ?? '',
-            );
-          }
-        }
-        if (rawMarker['icon'] != null) {
-          icon = BitmapDescriptor.fromJson(rawMarker['icon']);
-        }
-        return Marker(
-          markerId: MarkerId(rawMarker['markerId']),
-          alpha: rawMarker['alpha'],
-          anchor: offset,
-          consumeTapEvents: rawMarker['consumeTapEvents'],
-          draggable: rawMarker['draggable'],
-          flat: rawMarker['flat'],
-          icon: icon,
-          infoWindow: infoWindow,
-          position: position ?? _nullLatLng,
-          rotation: rawMarker['rotation'],
-          visible: rawMarker['visible'],
-          zIndex: rawMarker['zIndex'],
+  markers.addAll(list.map((rawMarker) {
+    Offset? offset;
+    LatLng? position;
+    InfoWindow? infoWindow;
+    BitmapDescriptor? icon;
+    if (rawMarker['anchor'] != null) {
+      offset = Offset((rawMarker['anchor'][0]), (rawMarker['anchor'][1]));
+    }
+    if (rawMarker['position'] != null) {
+      position = LatLng.fromJson(rawMarker['position']);
+    }
+    if (rawMarker['infoWindow'] != null) {
+      final String title = rawMarker['infoWindow']['title'];
+      final String snippet = rawMarker['infoWindow']['snippet'];
+      if (title != null || snippet != null) {
+        infoWindow = InfoWindow(
+          title: title,
+          snippet: snippet,
         );
-      }) ??
-      []);
+      }
+    }
+    if (rawMarker['icon'] != null) {
+      icon = BitmapDescriptor.fromJson(rawMarker['icon']);
+    }
+    return Marker(
+      markerId: MarkerId(rawMarker['markerId']),
+      alpha: rawMarker['alpha'],
+      anchor: offset ?? const Offset(0.5, 1.0),
+      consumeTapEvents: rawMarker['consumeTapEvents'],
+      draggable: rawMarker['draggable'],
+      flat: rawMarker['flat'],
+      icon: icon ?? BitmapDescriptor.defaultMarker,
+      infoWindow: infoWindow ?? InfoWindow.noText,
+      position: position ?? _nullLatLng,
+      rotation: rawMarker['rotation'],
+      visible: rawMarker['visible'],
+      zIndex: rawMarker['zIndex'],
+    );
+  }));
   return markers;
 }
 
 Set<Circle> _rawOptionsToInitialCircles(Map<String, dynamic> rawOptions) {
   final List<Map<String, dynamic>> list = rawOptions['circlesToAdd'];
   Set<Circle> circles = {};
-  circles.addAll(list?.map((rawCircle) {
-        LatLng center;
-        if (rawCircle['center'] != null) {
-          center = LatLng.fromJson(rawCircle['center']);
-        }
-        return Circle(
-          circleId: CircleId(rawCircle['circleId']),
-          consumeTapEvents: rawCircle['consumeTapEvents'],
-          fillColor: Color(rawCircle['fillColor'] ?? _defaultFillColor),
-          center: center ?? _nullLatLng,
-          radius: rawCircle['radius'],
-          strokeColor: Color(rawCircle['strokeColor'] ?? _defaultStrokeColor),
-          strokeWidth: rawCircle['strokeWidth'],
-          visible: rawCircle['visible'],
-          zIndex: rawCircle['zIndex'],
-        );
-      }) ??
-      []);
+  circles.addAll(list.map((rawCircle) {
+    LatLng? center;
+    if (rawCircle['center'] != null) {
+      center = LatLng.fromJson(rawCircle['center']);
+    }
+    return Circle(
+      circleId: CircleId(rawCircle['circleId']),
+      consumeTapEvents: rawCircle['consumeTapEvents'],
+      fillColor: Color(rawCircle['fillColor'] ?? _defaultFillColor),
+      center: center ?? _nullLatLng,
+      radius: rawCircle['radius'],
+      strokeColor: Color(rawCircle['strokeColor'] ?? _defaultStrokeColor),
+      strokeWidth: rawCircle['strokeWidth'],
+      visible: rawCircle['visible'],
+      zIndex: rawCircle['zIndex'],
+    );
+  }));
   return circles;
 }
 
@@ -331,21 +318,18 @@ Set<Circle> _rawOptionsToInitialCircles(Map<String, dynamic> rawOptions) {
 Set<Polyline> _rawOptionsToInitialPolylines(Map<String, dynamic> rawOptions) {
   final List<Map<String, dynamic>> list = rawOptions['polylinesToAdd'];
   Set<Polyline> polylines = {};
-  polylines.addAll(list?.map((rawPolyline) {
-        return Polyline(
-          polylineId: PolylineId(rawPolyline['polylineId']),
-          consumeTapEvents: rawPolyline['consumeTapEvents'],
-          color: Color(rawPolyline['color'] ?? _defaultStrokeColor),
-          geodesic: rawPolyline['geodesic'],
-          visible: rawPolyline['visible'],
-          zIndex: rawPolyline['zIndex'],
-          width: rawPolyline['width'],
-          points: rawPolyline['points']
-              ?.map<LatLng>((rawPoint) => LatLng.fromJson(rawPoint))
-              ?.toList(),
-        );
-      }) ??
-      []);
+  polylines.addAll(list.map((rawPolyline) {
+    return Polyline(
+      polylineId: PolylineId(rawPolyline['polylineId']),
+      consumeTapEvents: rawPolyline['consumeTapEvents'],
+      color: Color(rawPolyline['color'] ?? _defaultStrokeColor),
+      geodesic: rawPolyline['geodesic'],
+      visible: rawPolyline['visible'],
+      zIndex: rawPolyline['zIndex'],
+      width: rawPolyline['width'],
+      points: rawPolyline['points']?.map<LatLng>((rawPoint) => LatLng.fromJson(rawPoint))?.toList(),
+    );
+  }));
   return polylines;
 }
 
@@ -353,27 +337,22 @@ Set<Polygon> _rawOptionsToInitialPolygons(Map<String, dynamic> rawOptions) {
   final List<Map<String, dynamic>> list = rawOptions['polygonsToAdd'];
   Set<Polygon> polygons = {};
 
-  polygons.addAll(list?.map((rawPolygon) {
-        return Polygon(
-          polygonId: PolygonId(rawPolygon['polygonId']),
-          consumeTapEvents: rawPolygon['consumeTapEvents'],
-          fillColor: Color(rawPolygon['fillColor'] ?? _defaultFillColor),
-          geodesic: rawPolygon['geodesic'],
-          strokeColor: Color(rawPolygon['strokeColor'] ?? _defaultStrokeColor),
-          strokeWidth: rawPolygon['strokeWidth'],
-          visible: rawPolygon['visible'],
-          zIndex: rawPolygon['zIndex'],
-          points: rawPolygon['points']
-              ?.map<LatLng>((rawPoint) => LatLng.fromJson(rawPoint))
-              ?.toList(),
-          holes: rawPolygon['holes']
-              ?.map<List<LatLng>>((List hole) => hole
-                  ?.map<LatLng>((rawPoint) => LatLng.fromJson(rawPoint))
-                  ?.toList())
-              ?.toList(),
-        );
-      }) ??
-      []);
+  polygons.addAll(list.map((rawPolygon) {
+    return Polygon(
+      polygonId: PolygonId(rawPolygon['polygonId']),
+      consumeTapEvents: rawPolygon['consumeTapEvents'],
+      fillColor: Color(rawPolygon['fillColor'] ?? _defaultFillColor),
+      geodesic: rawPolygon['geodesic'],
+      strokeColor: Color(rawPolygon['strokeColor'] ?? _defaultStrokeColor),
+      strokeWidth: rawPolygon['strokeWidth'],
+      visible: rawPolygon['visible'],
+      zIndex: rawPolygon['zIndex'],
+      points: rawPolygon['points']?.map<LatLng>((rawPoint) => LatLng.fromJson(rawPoint))?.toList(),
+      holes: rawPolygon['holes']
+          ?.map<List<LatLng>>((List hole) => hole.map<LatLng?>((rawPoint) => LatLng.fromJson(rawPoint)).toList())
+          ?.toList(),
+    );
+  }));
   return polygons;
 }
 
@@ -381,27 +360,25 @@ Set<Polygon> _rawOptionsToInitialPolygons(Map<String, dynamic> rawOptions) {
 // TODO: Move to their appropriate objects, maybe make these copy constructors:
 // Marker.fromMarker(anotherMarker, moreOptions);
 
-gmaps.InfoWindowOptions _infoWindowOptionsFromMarker(Marker marker) {
-  if ((marker.infoWindow?.title?.isEmpty ?? true) &&
-      (marker.infoWindow?.snippet?.isEmpty ?? true)) {
+gmaps.InfoWindowOptions? _infoWindowOptionsFromMarker(Marker marker) {
+  if ((marker.infoWindow.title?.isEmpty ?? true) && (marker.infoWindow.snippet?.isEmpty ?? true)) {
     return null;
   }
 
   // Add an outer wrapper to the contents of the infowindow, we need it to listen
   // to click events...
-  final HtmlElement container = DivElement()
-    ..id = 'gmaps-marker-${marker.markerId.value}-infowindow';
+  final HtmlElement container = DivElement()..id = 'gmaps-marker-${marker.markerId.value}-infowindow';
   if (marker.infoWindow.title?.isNotEmpty ?? false) {
     final HtmlElement title = HeadingElement.h3()
       ..className = 'infowindow-title'
-      ..innerText = marker.infoWindow.title;
+      ..innerText = marker.infoWindow.title!;
     container.children.add(title);
   }
   if (marker.infoWindow.snippet?.isNotEmpty ?? false) {
     final HtmlElement snippet = DivElement()
       ..className = 'infowindow-snippet'
       ..setInnerHtml(
-        sanitizeHtml(marker.infoWindow.snippet),
+        sanitizeHtml(marker.infoWindow.snippet!),
         treeSanitizer: NodeTreeSanitizer.trusted,
       );
     container.children.add(snippet);
@@ -419,10 +396,10 @@ gmaps.InfoWindowOptions _infoWindowOptionsFromMarker(Marker marker) {
 // Preserves the position from the [currentMarker], if set.
 gmaps.MarkerOptions _markerOptionsFromMarker(
   Marker marker,
-  gmaps.Marker currentMarker,
+  gmaps.Marker? currentMarker,
 ) {
-  final iconConfig = marker.icon?.toJson() as List;
-  gmaps.Icon icon;
+  final iconConfig = marker.icon.toJson() as List;
+  gmaps.Icon? icon;
 
   if (iconConfig != null) {
     if (iconConfig[0] == 'fromAssetImage') {
@@ -430,8 +407,7 @@ gmaps.MarkerOptions _markerOptionsFromMarker(
       // iconConfig[2] contains the DPIs of the screen, but that information is
       // already encoded in the iconConfig[1]
 
-      icon = gmaps.Icon()
-        ..url = ui.webOnlyAssetManager.getAssetUrl(iconConfig[1]);
+      icon = gmaps.Icon()..url = ui.webOnlyAssetManager.getAssetUrl(iconConfig[1]);
 
       // iconConfig[3] may contain the [width, height] of the image, if passed!
       if (iconConfig.length >= 4 && iconConfig[3] != null) {
@@ -453,7 +429,7 @@ gmaps.MarkerOptions _markerOptionsFromMarker(
           marker.position.latitude,
           marker.position.longitude,
         )
-    ..title = sanitizeHtml(marker.infoWindow?.title ?? "")
+    ..title = sanitizeHtml(marker.infoWindow.title ?? "")
     ..zIndex = marker.zIndex
     ..visible = marker.visible
     ..opacity = marker.alpha
@@ -476,23 +452,23 @@ gmaps.CircleOptions _circleOptionsFromCircle(Circle circle) {
   return populationOptions;
 }
 
-gmaps.PolygonOptions _polygonOptionsFromPolygon(
-    gmaps.GMap googleMap, Polygon polygon) {
+gmaps.PolygonOptions _polygonOptionsFromPolygon(gmaps.GMap googleMap, Polygon polygon) {
   List<gmaps.LatLng> path = [];
   polygon.points.forEach((point) {
-    path.add(_latLngToGmLatLng(point));
+    if (_latLngToGmLatLng(point) != null) {
+      path.add(_latLngToGmLatLng(point)!);
+    }
   });
   final polygonDirection = _isPolygonClockwise(path);
   List<List<gmaps.LatLng>> paths = [path];
   int holeIndex = 0;
-  polygon.holes?.forEach((hole) {
+  polygon.holes.forEach((hole) {
     List<gmaps.LatLng> holePath =
-        hole.map((point) => _latLngToGmLatLng(point)).toList();
+        hole.map((point) => _latLngToGmLatLng(point)).where((element) => element != null).toList().cast();
     if (_isPolygonClockwise(holePath) == polygonDirection) {
       holePath = holePath.reversed.toList();
       if (kDebugMode) {
-        print(
-            'Hole [$holeIndex] in Polygon [${polygon.polygonId.value}] has been reversed.'
+        print('Hole [$holeIndex] in Polygon [${polygon.polygonId.value}] has been reversed.'
             ' Ensure holes in polygons are "wound in the opposite direction to the outer path."'
             ' More info: https://github.com/flutter/flutter/issues/74096');
       }
@@ -519,18 +495,16 @@ gmaps.PolygonOptions _polygonOptionsFromPolygon(
 bool _isPolygonClockwise(List<gmaps.LatLng> path) {
   var direction = 0.0;
   for (var i = 0; i < path.length; i++) {
-    direction = direction +
-        ((path[(i + 1) % path.length].lat - path[i].lat) *
-            (path[(i + 1) % path.length].lng + path[i].lng));
+    direction =
+        direction + ((path[(i + 1) % path.length].lat - path[i].lat) * (path[(i + 1) % path.length].lng + path[i].lng));
   }
   return direction >= 0;
 }
 
-gmaps.PolylineOptions _polylineOptionsFromPolyline(
-    gmaps.GMap googleMap, Polyline polyline) {
+gmaps.PolylineOptions _polylineOptionsFromPolyline(gmaps.GMap googleMap, Polyline polyline) {
   List<gmaps.LatLng> paths = [];
   polyline.points.forEach((point) {
-    paths.add(_latLngToGmLatLng(point));
+    if (_latLngToGmLatLng(point) != null) paths.add(_latLngToGmLatLng(point)!);
   });
 
   return gmaps.PolylineOptions()
@@ -566,9 +540,8 @@ void _applyCameraUpdate(gmaps.GMap map, CameraUpdate update) {
       map.panTo(gmaps.LatLng(json[1][0], json[1][1]));
       break;
     case 'newLatLngBounds':
-      map.fitBounds(gmaps.LatLngBounds(
-          gmaps.LatLng(json[1][0][0], json[1][0][1]),
-          gmaps.LatLng(json[1][1][0], json[1][1][1])));
+      map.fitBounds(
+          gmaps.LatLngBounds(gmaps.LatLng(json[1][0][0], json[1][0][1]), gmaps.LatLng(json[1][1][0], json[1][1][1])));
       // padding = json[2];
       // Needs package:google_maps ^4.0.0 to adjust the padding in fitBounds
       break;
@@ -576,7 +549,7 @@ void _applyCameraUpdate(gmaps.GMap map, CameraUpdate update) {
       map.panBy(json[1], json[2]);
       break;
     case 'zoomBy':
-      gmaps.LatLng focusLatLng;
+      gmaps.LatLng? focusLatLng;
       double zoomDelta = json[1] ?? 0;
       // Web only supports integer changes...
       int newZoomDelta = zoomDelta < 0 ? zoomDelta.floor() : zoomDelta.ceil();
@@ -619,8 +592,7 @@ gmaps.LatLng _pixelToLatLng(gmaps.GMap map, int x, int y) {
 
   final scale = 1 << map.zoom; // 2 ^ zoom
 
-  final point =
-      gmaps.Point((x / scale) + bottomLeft.x, (y / scale) + topRight.y);
+  final point = gmaps.Point((x / scale) + bottomLeft.x, (y / scale) + topRight.y);
 
   return projection.fromPointToLatLng(point);
 }
