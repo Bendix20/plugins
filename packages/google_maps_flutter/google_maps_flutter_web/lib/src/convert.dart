@@ -246,7 +246,8 @@ CameraPosition _gmViewportToCameraPosition(gmaps.GMap map) {
 }
 
 Set<Marker> _rawOptionsToInitialMarkers(Map<String, dynamic> rawOptions) {
-  final List<Map<String, dynamic>> list = rawOptions['markersToAdd'];
+  final List<Map<String, dynamic>> list =
+      (rawOptions['markersToAdd'] as List<dynamic>).map((e) => e as Map<String, dynamic>).toList();
   Set<Marker> markers = {};
   markers.addAll(list.map((rawMarker) {
     Offset? offset;
@@ -586,7 +587,7 @@ gmaps.LatLng _pixelToLatLng(gmaps.GMap map, int x, int y) {
   final sw = map.bounds?.southWest;
   final projection = map.projection;
 
-  final topRight =  projection!.fromLatLngToPoint!(ne)!;
+  final topRight = projection!.fromLatLngToPoint!(ne)!;
   final bottomLeft = projection.fromLatLngToPoint!(sw)!;
 
   final scale = 1 << map.zoom!.toInt(); // 2 ^ zoom
