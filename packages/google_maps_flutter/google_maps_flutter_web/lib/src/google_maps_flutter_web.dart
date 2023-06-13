@@ -28,8 +28,7 @@ class GoogleMapsPlugin extends GoogleMapsFlutterPlatform {
   // Convenience getter for a map controller by its mapId.
   GoogleMapController _map(int mapId) {
     final controller = _mapById[mapId];
-    assert(controller != null,
-        'Maps cannot be retrieved before calling buildView!');
+    assert(controller != null, 'Maps cannot be retrieved before calling buildView!');
     return controller;
   }
 
@@ -281,24 +280,29 @@ class GoogleMapsPlugin extends GoogleMapsFlutterPlatform {
       'circlesToAdd': serializeCircleSet(circles),
       'tileOverlaysToAdd': serializeTileOverlaySet(tileOverlays),
     };
-    if (defaultTargetPlatform == TargetPlatform.android) {
-      return AndroidView(
-        viewType: 'plugins.flutter.io/google_maps',
-        onPlatformViewCreated: onPlatformViewCreated,
-        gestureRecognizers: gestureRecognizers,
-        creationParams: creationParams,
-        creationParamsCodec: const StandardMessageCodec(),
-      );
-    } else if (defaultTargetPlatform == TargetPlatform.iOS) {
-      return UiKitView(
-        viewType: 'plugins.flutter.io/google_maps',
-        onPlatformViewCreated: onPlatformViewCreated,
-        gestureRecognizers: gestureRecognizers,
-        creationParams: creationParams,
-        creationParamsCodec: const StandardMessageCodec(),
-      );
+
+    int mapId = creationParams.remove('_webOnlyMapCreationId');
+
+    assert(mapId != null,
+        'buildView needs a `_webOnlyMapCreationId` in its creationParams to prevent widget reloads in web.');
+
+    // Bail fast if we've already rendered this mapId...
+    if (_mapById[mapId]?.widget != null) {
+      return _mapById[mapId].widget;
     }
-    return Text(
-        '$defaultTargetPlatform is not yet supported by the maps plugin');
+
+    final StreamController<MapEvent> controller = StreamController<MapEvent>.broadcast();
+
+    final mapController = GoogleMapController(
+      mapId: mapId,
+      streamController: controller,
+      rawOptions: creationParams,
+    );
+
+    _mapById[mapId] = mapController;
+
+    onPlatformViewCreated.call(mapId);
+
+    return mapController.widget;
   }
 }
