@@ -23,7 +23,7 @@ dependencies:
       ref: maps-ground-overlays
   google_maps: ^3.4.5
   stream_transform: ^2.0.0
-  sanitize_html: ^1.4.1
+  sanitize_html: ^2.0.0
 
 dev_dependencies:
   flutter_test:
