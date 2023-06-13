@@ -13,7 +13,7 @@ dependencies:
       path: packages/google_maps_flutter/google_maps_flutter_platform_interface/
       ref: maps-ground-overlays
   google_maps_flutter_web:
-    path: ./google_maps_flutter_web
+    path: ./../google_maps_flutter_web
     
 
 dev_dependencies:
