@@ -13,7 +13,10 @@ dependencies:
       path: packages/google_maps_flutter/google_maps_flutter_platform_interface/
       ref: maps-ground-overlays
   google_maps_flutter_web:
-    path: ./google_maps_flutter_web
+    git:
+      url: https://github.com/Bendix20/plugins.git
+      path: packages/google_maps_flutter/google_maps_flutter_web/
+      ref: master
     
 
 dev_dependencies:
