@@ -274,6 +274,7 @@ class GoogleMapsPlugin extends GoogleMapsFlutterPlatform {
     final Map<String, dynamic> creationParams = <String, dynamic>{
       'initialCameraPosition': initialCameraPosition.toMap(),
       'options': mapOptions,
+      '_webOnlyMapCreationId': 8362515,
       'markersToAdd': serializeMarkerSet(markers),
       'polygonsToAdd': serializePolygonSet(polygons),
       'polylinesToAdd': serializePolylineSet(polylines),
