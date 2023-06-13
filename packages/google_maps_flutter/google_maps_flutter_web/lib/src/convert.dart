@@ -292,7 +292,8 @@ Set<Marker> _rawOptionsToInitialMarkers(Map<String, dynamic> rawOptions) {
 }
 
 Set<Circle> _rawOptionsToInitialCircles(Map<String, dynamic> rawOptions) {
-  final List<Map<String, dynamic>> list = rawOptions['circlesToAdd'];
+  final List<Map<String, dynamic>> list =
+      (rawOptions['circlesToAdd'] as List<dynamic>).map((e) => e as Map<String, dynamic>).toList();
   Set<Circle> circles = {};
   circles.addAll(list.map((rawCircle) {
     LatLng? center;
@@ -316,7 +317,8 @@ Set<Circle> _rawOptionsToInitialCircles(Map<String, dynamic> rawOptions) {
 
 // Unsupported on the web: endCap, jointType, patterns and startCap.
 Set<Polyline> _rawOptionsToInitialPolylines(Map<String, dynamic> rawOptions) {
-  final List<Map<String, dynamic>> list = rawOptions['polylinesToAdd'];
+  final List<Map<String, dynamic>> list =
+      (rawOptions['polylinesToAdd'] as List<dynamic>).map((e) => e as Map<String, dynamic>).toList();
   Set<Polyline> polylines = {};
   polylines.addAll(list.map((rawPolyline) {
     return Polyline(
@@ -334,7 +336,8 @@ Set<Polyline> _rawOptionsToInitialPolylines(Map<String, dynamic> rawOptions) {
 }
 
 Set<Polygon> _rawOptionsToInitialPolygons(Map<String, dynamic> rawOptions) {
-  final List<Map<String, dynamic>> list = rawOptions['polygonsToAdd'];
+  final List<Map<String, dynamic>> list =
+      (rawOptions['polylinesToAdd'] as List<dynamic>).map((e) => e as Map<String, dynamic>).toList();
   Set<Polygon> polygons = {};
 
   polygons.addAll(list.map((rawPolygon) {
