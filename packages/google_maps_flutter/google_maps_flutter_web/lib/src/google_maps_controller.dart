@@ -90,7 +90,7 @@ class GoogleMapController {
   /// Overrides certain properties to install mocks defined during testing.
   @visibleForTesting
   void debugSetOverrides({
-    required DebugCreateMapFunction createMap, // TODO ???
+    required DebugCreateMapFunction createMap,
     MarkersController? markers,
     CirclesController? circles,
     PolygonsController? polygons,
@@ -103,11 +103,11 @@ class GoogleMapController {
     _polylinesController = polylines ?? _polylinesController;
   }
 
-  late DebugCreateMapFunction _overrideCreateMap;
+  DebugCreateMapFunction? _overrideCreateMap;
 
   gmaps.GMap _createMap(HtmlElement div, gmaps.MapOptions options) {
     if (_overrideCreateMap != null) {
-      return _overrideCreateMap(div, options);
+      return _overrideCreateMap!(div, options);
     }
     return gmaps.GMap(div, options);
   }
