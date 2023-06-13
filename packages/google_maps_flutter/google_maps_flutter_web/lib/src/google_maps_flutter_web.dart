@@ -260,32 +260,45 @@ class GoogleMapsPlugin extends GoogleMapsFlutterPlatform {
 
   @override
   Widget buildView(
-      Map<String, dynamic> creationParams,
-      Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers,
-      PlatformViewCreatedCallback onPlatformViewCreated) {
-    int mapId = creationParams.remove('_webOnlyMapCreationId');
-
-    assert(mapId != null,
-        'buildView needs a `_webOnlyMapCreationId` in its creationParams to prevent widget reloads in web.');
-
-    // Bail fast if we've already rendered this mapId...
-    if (_mapById[mapId]?.widget != null) {
-      return _mapById[mapId].widget;
+    int creationId,
+    PlatformViewCreatedCallback onPlatformViewCreated, {
+    @required CameraPosition initialCameraPosition,
+    Set<Marker> markers = const <Marker>{},
+    Set<Polygon> polygons = const <Polygon>{},
+    Set<Polyline> polylines = const <Polyline>{},
+    Set<Circle> circles = const <Circle>{},
+    Set<TileOverlay> tileOverlays = const <TileOverlay>{},
+    Set<GroundOverlay> groundOverlays = const <GroundOverlay>{},
+    Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers,
+    Map<String, dynamic> mapOptions = const <String, dynamic>{},
+  }) {
+    final Map<String, dynamic> creationParams = <String, dynamic>{
+      'initialCameraPosition': initialCameraPosition.toMap(),
+      'options': mapOptions,
+      'markersToAdd': serializeMarkerSet(markers),
+      'polygonsToAdd': serializePolygonSet(polygons),
+      'polylinesToAdd': serializePolylineSet(polylines),
+      'circlesToAdd': serializeCircleSet(circles),
+      'tileOverlaysToAdd': serializeTileOverlaySet(tileOverlays),
+    };
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      return AndroidView(
+        viewType: 'plugins.flutter.io/google_maps',
+        onPlatformViewCreated: onPlatformViewCreated,
+        gestureRecognizers: gestureRecognizers,
+        creationParams: creationParams,
+        creationParamsCodec: const StandardMessageCodec(),
+      );
+    } else if (defaultTargetPlatform == TargetPlatform.iOS) {
+      return UiKitView(
+        viewType: 'plugins.flutter.io/google_maps',
+        onPlatformViewCreated: onPlatformViewCreated,
+        gestureRecognizers: gestureRecognizers,
+        creationParams: creationParams,
+        creationParamsCodec: const StandardMessageCodec(),
+      );
     }
-
-    final StreamController<MapEvent> controller =
-        StreamController<MapEvent>.broadcast();
-
-    final mapController = GoogleMapController(
-      mapId: mapId,
-      streamController: controller,
-      rawOptions: creationParams,
-    );
-
-    _mapById[mapId] = mapController;
-
-    onPlatformViewCreated.call(mapId);
-
-    return mapController.widget;
+    return Text(
+        '$defaultTargetPlatform is not yet supported by the maps plugin');
   }
 }
