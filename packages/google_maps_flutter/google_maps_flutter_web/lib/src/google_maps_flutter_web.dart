@@ -246,6 +246,14 @@ class GoogleMapsPlugin extends GoogleMapsFlutterPlatform {
   }
 
   @override
+  Future<void> updateTileOverlays({
+    required Set<TileOverlay> newTileOverlays,
+    required int mapId,
+  }) async {
+    // nothing
+  }
+
+  @override
   Stream<MapTapEvent> onTap({required int mapId}) {
     return _events(mapId).whereType<MapTapEvent>();
   }
