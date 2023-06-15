@@ -527,7 +527,7 @@ gmaps.PolylineOptions _polylineOptionsFromPolyline(gmaps.GMap googleMap, Polylin
 
 // Translates a [CameraUpdate] into operations on a [gmaps.GMap].
 void _applyCameraUpdate(gmaps.GMap map, CameraUpdate update) {
-  final json = update.toJson() as Map<dynamic, dynamic>;
+  final json = update.toJson() as List<dynamic>;
   switch (json[0]) {
     case 'newCameraPosition':
       map.heading = json[1]['bearing'];
