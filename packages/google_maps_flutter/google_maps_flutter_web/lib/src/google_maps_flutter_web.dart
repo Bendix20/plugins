@@ -241,6 +241,11 @@ class GoogleMapsPlugin extends GoogleMapsFlutterPlatform {
   }
 
   @override
+  Stream<GroundOverlayTapEvent> onGroundOverlayTap({required int mapId}) {
+    return Stream.empty();
+  }
+
+  @override
   Stream<MapTapEvent> onTap({required int mapId}) {
     return _events(mapId).whereType<MapTapEvent>();
   }
