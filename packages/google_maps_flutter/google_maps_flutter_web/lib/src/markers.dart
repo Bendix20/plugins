@@ -35,19 +35,19 @@ class MarkersController extends GeometryController {
         return;
       }
 
-      // final infoWindowOptions = _infoWindowOptionsFromMarker(marker);
-      // gmaps.InfoWindow? gmInfoWindow;
+      final infoWindowOptions = _infoWindowOptionsFromMarker(marker);
+      gmaps.InfoWindow? gmInfoWindow;
 
-      // if (infoWindowOptions != null) {
-      //   gmInfoWindow = gmaps.InfoWindow(infoWindowOptions);
-      //   // Google Maps' JS SDK does not have a click event on the InfoWindow, so
-      //   // we make one...
-      //   if (infoWindowOptions.content is HtmlElement) {
-      //     (infoWindowOptions.content as HtmlElement).onClick.listen((_) {
-      //       _onInfoWindowTap(marker.markerId);
-      //     });
-      //   }
-      // }
+      if (infoWindowOptions != null) {
+        gmInfoWindow = gmaps.InfoWindow(infoWindowOptions);
+        // Google Maps' JS SDK does not have a click event on the InfoWindow, so
+        // we make one...
+        if (infoWindowOptions.content is HtmlElement) {
+          (infoWindowOptions.content as HtmlElement).onClick.listen((_) {
+            _onInfoWindowTap(marker.markerId);
+          });
+        }
+      }
 
       final currentMarker = _markerIdToController[marker.markerId]?.marker;
 
@@ -56,7 +56,7 @@ class MarkersController extends GeometryController {
       gmMarker.map = googleMap;
       MarkerController controller = MarkerController(
         marker: gmMarker,
-        // infoWindow: gmInfoWindow,
+        infoWindow: gmInfoWindow,
         consumeTapEvents: marker.consumeTapEvents,
         onTap: () {
           this.showMarkerInfoWindow(marker.markerId);
